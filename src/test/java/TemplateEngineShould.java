@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TemplateEngineShould {
     /*
-    "hola `$user`, hoy es `$day`", "user" = "carlos", "day" = "lunes" -> "hola carlos, hoy es lunes"
+
     "`$una`,`$dos`,`$mil`" -> "una" = a, "dos" = b, "mil" = 1000 -> "a,b,100"
 
     public String parse(String template,List<String> variables)
@@ -18,11 +18,8 @@ public class TemplateEngineShould {
             return template;
         }
 
-        String key = template.substring(template.indexOf("`$") + 2, template.lastIndexOf("`"));
-
-        if (variables.containsKey(key)) {
-            String value = variables.get(key);
-            return template.replace("`$" + key + "`", value);
+        for (Map.Entry<String, String> pair : variables.entrySet()) {
+            template = template.replace("`$" + pair.getKey() + "`", pair.getValue());
         }
         return template;
     }
@@ -55,6 +52,15 @@ public class TemplateEngineShould {
         variables.put("friend", "Pedro");
         String template = "hola,`$user`";
         assertThat(parse(template, variables)).isEqualTo("hola,`$user`");
+    }
+
+    @Test
+    public void parse_template_with_several_variables() {
+        HashMap<String, String> variables = new HashMap<String, String>();
+        variables.put("user", "Carlos");
+        variables.put("day", "Lunes");
+        String template = "hola `$user`, hoy es `$day`";
+        assertThat(parse(template, variables)).isEqualTo("hola Carlos, hoy es Lunes");
     }
 
 }
