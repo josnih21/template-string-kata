@@ -1,21 +1,17 @@
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TemplateEngineShould {
-    /*
-        TO-DO
-        Move to separated class
-        test refactor with Before annotation
-        Rename test
-     */
 
+    @Before
+    public void setTemplate(){
+        Template template = new Template();
+    }
     @Test
-    public void test() {
+    public void return_template_with_no_variables_added() {
         HashMap<String, String> variables = new HashMap<String, String>();
         assertThat(Template.parse("", variables)).isEqualTo("");
         assertThat(Template.parse("hola", variables)).isEqualTo("hola");
